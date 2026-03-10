@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Matemática</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.2em;
+        }
+        
+        .qr-info {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #555;
+        }
+        
+        .questao {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        
+        .questao:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .numero-questao {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .enunciado {
+            font-size: 1.2em;
+            color: #444;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .figura {
+            margin: 20px 0;
+            text-align: center;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px dashed #667eea;
+        }
+        
+        .figura img {
+            max-width: 100%;
+            max-height: 250px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .opcoes {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .opcao {
+            background: #f5f5f5;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            font-size: 1.1em;
+        }
+        
+        .opcao:hover {
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border-color: #667eea;
+            transform: scale(1.02);
+        }
+        
+        .opcao.selecionada {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .feedback.correto {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            display: block;
+        }
+        
+        .feedback.incorreto {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            display: block;
+        }
+        
+        .botoes {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .botao {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .botao:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        .botao.limpar {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+        
+        .resultado {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .resultado span {
+            color: #667eea;
+            font-size: 2em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .opcoes {
+                grid-template-columns: 1fr;
+            }
+            
+            .botao {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📐 Quiz Matemática</h1>
+            <p>15 questões para testar seus conhecimentos</p>
+            <div class="qr-info">
+                📱 Compartilhe este link com seus amigos!
+            </div>
+        </div>
+        
+        <!-- QUESTÃO 1 -->
+        <div class="questao" id="q1">
+            <div class="numero-questao">Questão 1</div>
+            <div class="enunciado">
+                O valor de \(\frac{3}{5} \div (-2)\) é igual a:
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q1', 'A')">A) \(-\frac{3}{10}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q1', 'B')">B) \(\frac{3}{10}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q1', 'C')">C) \(\frac{6}{10}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q1', 'D')">D) \(-\frac{6}{10}\)</div>
+            </div>
+            <div class="feedback" id="fb-q1"></div>
+        </div>
+        
+        <!-- QUESTÃO 2 -->
+        <div class="questao" id="q2">
+            <div class="numero-questao">Questão 2</div>
+            <div class="enunciado">
+                Na figura, o quadrilátero [ABCD] é um papagaio. Sabendo que AC = 2m e BD = 1,5m.
+            </div>
+            <div class="figura">
+                <img src="image1.png" alt="Figura do papagaio" onerror="this.src='https://via.placeholder.com/400x200?text=Imagem+do+Papagaio'">
+            </div>
+            <div class="enunciado">
+                Qual é, em metros quadrados, a área do papagaio?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q2', 'A')">A) \(3\ m^2\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q2', 'B')">B) \(2\ m^2\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q2', 'C')">C) \(1,5\ m^2\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q2', 'D')">D) \(0,75\ m^2\)</div>
+            </div>
+            <div class="feedback" id="fb-q2"></div>
+        </div>
+        
+        <!-- QUESTÃO 3 -->
+        <div class="questao" id="q3">
+            <div class="numero-questao">Questão 3</div>
+            <div class="enunciado">
+                Qual é o valor de \(\left(-\frac{3}{4}\right) \div \frac{1}{4} \times (-1)\)?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q3', 'A')">A) 48</div>
+                <div class="opcao" onclick="selecionarOpcao('q3', 'B')">B) -3</div>
+                <div class="opcao" onclick="selecionarOpcao('q3', 'C')">C) -48</div>
+                <div class="opcao" onclick="selecionarOpcao('q3', 'D')">D) 3</div>
+            </div>
+            <div class="feedback" id="fb-q3"></div>
+        </div>
+        
+        <!-- QUESTÃO 4 -->
+        <div class="questao" id="q4">
+            <div class="numero-questao">Questão 4</div>
+            <div class="enunciado">
+                O produto de 7 milhões por \(21 \times 10^5\) é:
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q4', 'A')">A) \(147 \times 10^5\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q4', 'B')">B) \(7 \times 21 \times 10^9\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q4', 'C')">C) \(7 \times 21 \times 10^{11}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q4', 'D')">D) \(1,47 \times 10^7\)</div>
+            </div>
+            <div class="feedback" id="fb-q4"></div>
+        </div>
+        
+        <!-- QUESTÃO 5 -->
+        <div class="questao" id="q5">
+            <div class="numero-questao">Questão 5</div>
+            <div class="enunciado">
+                Qual dos números representa o produto \(10^4 \times 5^3 \times 10^2 \times 2^3\)
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q5', 'A')">A) \(10^6\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q5', 'B')">B) \(10^7\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q5', 'C')">C) \(10^8\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q5', 'D')">D) \(10^9\)</div>
+            </div>
+            <div class="feedback" id="fb-q5"></div>
+        </div>
+        
+        <!-- QUESTÃO 6 -->
+        <div class="questao" id="q6">
+            <div class="numero-questao">Questão 6</div>
+            <div class="enunciado">
+                Observa a figura, em que os pontos A, B e C pertencem à mesma reta.
+            </div>
+            <div class="figura">
+                <img src="image2.png" alt="Figura da reta" onerror="this.src='https://via.placeholder.com/400x100?text=Imagem+da+Reta'">
+            </div>
+            <div class="enunciado">
+                Qual das seguintes expressões representa a distância entre A e C?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q6', 'A')">A) \(12x + 9\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q6', 'B')">B) \(2x - 3\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q6', 'C')">C) \(3 - 2x\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q6', 'D')">D) \(7x + 3\)</div>
+            </div>
+            <div class="feedback" id="fb-q6"></div>
+        </div>
+        
+        <!-- QUESTÃO 7 -->
+        <div class="questao" id="q7">
+            <div class="numero-questao">Questão 7</div>
+            <div class="enunciado">
+                A percentagem da letra A na palavra MATEMÁTICA é:
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q7', 'A')">A) \(0,03\ \%\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q7', 'B')">B) \(3\ \%\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q7', 'C')">C) \(30\ \%\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q7', 'D')">D) \(70\ \%\)</div>
+            </div>
+            <div class="feedback" id="fb-q7"></div>
+        </div>
+        
+        <!-- QUESTÃO 8 -->
+        <div class="questao" id="q8">
+            <div class="numero-questao">Questão 8</div>
+            <div class="enunciado">
+                A figura representa uma sequência formada por quadrados. O perímetro da primeira figura é 40 cm.
+            </div>
+            <div class="figura">
+                <img src="image3.png" alt="Sequência de quadrados" onerror="this.src='https://via.placeholder.com/400x150?text=Sequência+de+Quadrados'">
+            </div>
+            <div class="enunciado">
+                Qual é o perímetro da figura 4?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q8', 'A')">A) 80 cm</div>
+                <div class="opcao" onclick="selecionarOpcao('q8', 'B')">B) 100 cm</div>
+                <div class="opcao" onclick="selecionarOpcao('q8', 'C')">C) 130 cm</div>
+                <div class="opcao" onclick="selecionarOpcao('q8', 'D')">D) 140 cm</div>
+            </div>
+            <div class="feedback" id="fb-q8"></div>
+        </div>
+        
+        <!-- QUESTÃO 9 -->
+        <div class="questao" id="q9">
+            <div class="numero-questao">Questão 9</div>
+            <div class="enunciado">
+                A Matilde conseguiu equilibrar uma balança distribuindo um peso de 60g e 9 lápis de cor todos de igual massa pelos dois pratos.
+            </div>
+            <div class="figura">
+                <img src="image4.png" alt="Balança com lápis" onerror="this.src='https://via.placeholder.com/400x200?text=Imagem+da+Balança'">
+            </div>
+            <div class="enunciado">
+                Qual é a massa de cada um dos lápis?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q9', 'A')">A) 15 g</div>
+                <div class="opcao" onclick="selecionarOpcao('q9', 'B')">B) 18 g</div>
+                <div class="opcao" onclick="selecionarOpcao('q9', 'C')">C) 20 g</div>
+                <div class="opcao" onclick="selecionarOpcao('q9', 'D')">D) 30 g</div>
+            </div>
+            <div class="feedback" id="fb-q9"></div>
+        </div>
+        
+        <!-- QUESTÃO 10 -->
+        <div class="questao" id="q10">
+            <div class="numero-questao">Questão 10</div>
+            <div class="enunciado">
+                O número -1 é solução de qual das equações seguintes?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q10', 'A')">A) \(3 + 3x = 10\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q10', 'B')">B) \(15x - x = 6x + 8\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q10', 'C')">C) \(13x - 7 = 12x - 8\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q10', 'D')">D) \(22x - 22 = 15x - 15\)</div>
+            </div>
+            <div class="feedback" id="fb-q10"></div>
+        </div>
+        
+        <!-- QUESTÃO 11 -->
+        <div class="questao" id="q11">
+            <div class="numero-questao">Questão 11</div>
+            <div class="enunciado">
+                Numa caixa, os bombons de chocolate branco estão dispostos entre filas de chocolate negro.
+            </div>
+            <div class="figura">
+                <img src="image5.png" alt="Disposição dos bombons" onerror="this.src='https://via.placeholder.com/400x200?text=Imagem+dos+Bombons'">
+            </div>
+            <div class="enunciado">
+                Qual é o número total de bombons da caixa de ordem 10?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q11', 'A')">A) 40</div>
+                <div class="opcao" onclick="selecionarOpcao('q11', 'B')">B) 32</div>
+                <div class="opcao" onclick="selecionarOpcao('q11', 'C')">C) 22</div>
+                <div class="opcao" onclick="selecionarOpcao('q11', 'D')">D) 10</div>
+            </div>
+            <div class="feedback" id="fb-q11"></div>
+        </div>
+        
+        <!-- QUESTÃO 12 -->
+        <div class="questao" id="q12">
+            <div class="numero-questao">Questão 12</div>
+            <div class="enunciado">
+                A Cátia comeu \(\frac{1}{5}\) de uma tarte e o Júlio comeu \(\frac{1}{4}\) da mesma tarte. Que parte da tarte sobrou?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q12', 'A')">A) \(\frac{9}{20}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q12', 'B')">B) \(\frac{2}{3}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q12', 'C')">C) \(\frac{7}{9}\)</div>
+                <div class="opcao" onclick="selecionarOpcao('q12', 'D')">D) \(\frac{11}{20}\)</div>
+            </div>
+            <div class="feedback" id="fb-q12"></div>
+        </div>
+        
+        <!-- QUESTÃO 13 -->
+        <div class="questao" id="q13">
+            <div class="numero-questao">Questão 13</div>
+            <div class="enunciado">
+                O valor numérico da expressão \(3 + a - (-b) + 1\) para \(a = -2\) e \(b = 2\) é:
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q13', 'A')">A) 4</div>
+                <div class="opcao" onclick="selecionarOpcao('q13', 'B')">B) 1</div>
+                <div class="opcao" onclick="selecionarOpcao('q13', 'C')">C) 3</div>
+                <div class="opcao" onclick="selecionarOpcao('q13', 'D')">D) 2</div>
+            </div>
+            <div class="feedback" id="fb-q13"></div>
+        </div>
+        
+        <!-- QUESTÃO 14 -->
+        <div class="questao" id="q14">
+            <div class="numero-questao">Questão 14</div>
+            <div class="enunciado">
+                O Miguel foi ao bar da escola, mas como não tinha dinheiro ficou a dever 2,30 euros. No dia seguinte a mãe deu lhe 5 euros. O Miguel pagou a dívida e ainda pediu uma sandes que custava 0,80 euros. Com quanto dinheiro ficou no final?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q14', 'A')">A) 3,5 euros</div>
+                <div class="opcao" onclick="selecionarOpcao('q14', 'B')">B) 1,9 euros</div>
+                <div class="opcao" onclick="selecionarOpcao('q14', 'C')">C) 4,2 euros</div>
+                <div class="opcao" onclick="selecionarOpcao('q14', 'D')">D) 3,1 euros</div>
+            </div>
+            <div class="feedback" id="fb-q14"></div>
+        </div>
+        
+        <!-- QUESTÃO 15 -->
+        <div class="questao" id="q15">
+            <div class="numero-questao">Questão 15</div>
+            <div class="enunciado">
+                Observa a balança que está em equilíbrio.
+            </div>
+            <div class="figura">
+                <img src="image6.png" alt="Balança em equilíbrio" onerror="this.src='https://via.placeholder.com/400x200?text=Imagem+da+Balança+2'">
+            </div>
+            <div class="enunciado">
+                Qual é a massa da bola azul?
+            </div>
+            <div class="opcoes">
+                <div class="opcao" onclick="selecionarOpcao('q15', 'A')">A) 26 Kg</div>
+                <div class="opcao" onclick="selecionarOpcao('q15', 'B')">B) 30 Kg</div>
+                <div class="opcao" onclick="selecionarOpcao('q15', 'C')">C) 33 Kg</div>
+                <div class="opcao" onclick="selecionarOpcao('q15', 'D')">D) 27 Kg</div>
+            </div>
+            <div class="feedback" id="fb-q15"></div>
+        </div>
+        
+        <div class="botoes">
+            <button class="botao" onclick="corrigirTodas()">✅ CORRIGIR RESPOSTAS</button>
+            <button class="botao limpar" onclick="limparTodas()">🔄 LIMPAR TUDO</button>
+        </div>
+        
+        <div class="resultado" id="resultado">
+            Pontuação: <span id="pontuacao">0</span> / 15
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script>
+        // Gabarito
+        const GABARITO = {
+            q1: 'A',
+            q2: 'C',
+            q3: 'D',
+            q4: 'C',
+            q5: 'D',
+            q6: 'A',
+            q7: 'C',
+            q8: 'B',
+            q9: 'C',
+            q10: 'C',
+            q11: 'C',
+            q12: 'D',
+            q13: 'A',
+            q14: 'B',
+            q15: 'D'
+        };
+        
+        // Armazenar respostas do usuário
+        let respostas = {};
+        
+        // Selecionar opção
+        function selecionarOpcao(questao, valor) {
+            respostas[questao] = valor;
+            
+            // Atualizar visual
+            document.querySelectorAll(`#${questao} .opcao`).forEach(op => {
+                op.classList.remove('selecionada');
+            });
+            
+            event.currentTarget.classList.add('selecionada');
+        }
+        
+        // Corrigir todas as questões
+        function corrigirTodas() {
+            let acertos = 0;
+            
+            for (let i = 1; i <= 15; i++) {
+                const questao = 'q' + i;
+                const resposta = respostas[questao];
+                const feedback = document.getElementById('fb-' + questao);
+                
+                if (resposta) {
+                    if (resposta === GABARITO[questao]) {
+                        feedback.className = 'feedback correto';
+                        feedback.innerHTML = '✓ Correto!';
+                        acertos++;
+                    } else {
+                        feedback.className = 'feedback incorreto';
+                        feedback.innerHTML = `✗ Incorreto. A resposta correta é ${GABARITO[questao]}.`;
+                    }
+                } else {
+                    feedback.className = 'feedback incorreto';
+                    feedback.innerHTML = `⚬ Sem resposta. A resposta correta é ${GABARITO[questao]}.`;
+                }
+            }
+            
+            document.getElementById('pontuacao').innerText = acertos;
+            
+            // Rolar para o resultado
+            document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Limpar todas as respostas
+        function limparTodas() {
+            respostas = {};
+            
+            // Limpar visual
+            document.querySelectorAll('.opcao').forEach(op => {
+                op.classList.remove('selecionada');
+            });
+            
+            // Limpar feedbacks
+            document.querySelectorAll('.feedback').forEach(fb => {
+                fb.className = 'feedback';
+                fb.innerHTML = '';
+            });
+            
+            // Zerar pontuação
+            document.getElementById('pontuacao').innerText = '0';
+        }
+    </script>
+</body>
+</html>
