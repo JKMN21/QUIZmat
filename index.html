@@ -21,7 +21,8 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 2rem 1rem;
+            padding: 1rem;
+            padding-top: 120px; /* Espaço para o header fixo */
             color: #e1e9f0;
         }
 
@@ -30,11 +31,98 @@
             width: 100%;
         }
 
-        /* Header sofisticado */
+        /* Header fixo (sticky) */
+        .header-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 18, 30, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(74, 144, 226, 0.3);
+            box-shadow: 0 10px 30px -10px black;
+            z-index: 1000;
+            padding: 0.8rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .header-left h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #a5f3fc, #c7d2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.5rem 1.5rem;
+            border-radius: 3rem;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-icon {
+            font-size: 1.2rem;
+            color: #60a5fa;
+        }
+
+        .stat-info h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .stat-info span {
+            font-size: 0.7rem;
+            color: #90b1d9;
+            text-transform: uppercase;
+        }
+
+        .timer-highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .progress-container-fixed {
+            width: 200px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 100px;
+            height: 0.6rem;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .progress-fill-fixed {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            border-radius: 100px;
+            transition: width 0.4s ease;
+        }
+
+        /* Header original (agora só conteúdo) */
         .header {
             background: rgba(18, 28, 48, 0.8);
             backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(74, 144, 226, 0.25);
             border-radius: 3rem 3rem 2rem 2rem;
             padding: 2rem 2.5rem;
@@ -90,41 +178,9 @@
             color: #fbbf24;
         }
 
-        .stats-header {
-            display: flex;
-            gap: 2rem;
-            background: rgba(0, 10, 25, 0.5);
-            padding: 1rem 2rem;
-            border-radius: 4rem;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
-        }
+        /* Removemos o stats-header daqui pois está no fixo */
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .stat-icon {
-            font-size: 1.5rem;
-            color: #60a5fa;
-        }
-
-        .stat-info h3 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: white;
-        }
-
-        .stat-info span {
-            font-size: 0.85rem;
-            color: #90b1d9;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Barra de progresso */
+        /* Barra de progresso original (agora só decorativa, mas mantemos) */
         .progress-container {
             margin-top: 2rem;
             background: rgba(0, 0, 0, 0.4);
@@ -399,7 +455,6 @@
             color: #60a5fa;
         }
 
-        /* Timer warning */
         .timer-warning {
             color: #fbbf24;
             animation: pulse 1s infinite;
@@ -412,14 +467,24 @@
 
         /* Responsividade */
         @media (max-width: 700px) {
-            .header-content {
-                flex-direction: column;
-                align-items: start;
-                gap: 1rem;
+            body {
+                padding-top: 160px;
             }
-            .stats-header {
+            .header-fixed {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0.8rem 1rem;
+            }
+            .header-left {
+                width: 100%;
+                justify-content: space-between;
+            }
+            .header-stats {
                 width: 100%;
                 justify-content: space-around;
+            }
+            .progress-container-fixed {
+                width: 100%;
             }
             .options-grid {
                 grid-template-columns: 1fr;
@@ -429,7 +494,6 @@
             }
         }
 
-        /* Estilo para placeholder de imagem */
         .figure-placeholder {
             display: flex;
             flex-direction: column;
@@ -440,30 +504,41 @@
     </style>
 </head>
 <body>
+    <!-- Header fixo que acompanha a rolagem -->
+    <div class="header-fixed" id="stickyHeader">
+        <div class="header-left">
+            <h2>mathquiz</h2>
+            <div class="header-stats">
+                <div class="stat-item">
+                    <i class="fas fa-check-circle stat-icon"></i>
+                    <div class="stat-info">
+                        <h3 id="sticky-correct">0</h3>
+                        <span>corretas</span>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-hourglass-half stat-icon"></i>
+                    <div class="stat-info">
+                        <h3 id="sticky-timer">10:00</h3>
+                        <span>tempo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="progress-container-fixed">
+            <div class="progress-fill-fixed" id="sticky-progress"></div>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- HEADER LUXO -->
+        <!-- Header original (agora apenas decorativo, mas ainda mostramos info) -->
         <div class="header">
             <div class="header-content">
                 <div class="title">
                     <h1>math<span style="color: #fff; -webkit-text-fill-color: white;">quiz</span></h1>
                     <p><i class="fas fa-crown"></i> 15 desafios · edição especial</p>
                 </div>
-                <div class="stats-header">
-                    <div class="stat-item">
-                        <i class="fas fa-check-circle stat-icon"></i>
-                        <div class="stat-info">
-                            <h3 id="correct-count">0</h3>
-                            <span>corretas</span>
-                        </div>
-                    </div>
-                    <div class="stat-item">
-                        <i class="fas fa-hourglass-half stat-icon"></i>
-                        <div class="stat-info">
-                            <h3 id="timer-display">10:00</h3>
-                            <span>tempo</span>
-                        </div>
-                    </div>
-                </div>
+                <!-- stats foram movidos para o fixo, então removemos daqui -->
             </div>
             <div class="progress-container">
                 <div class="progress-fill" id="progress-bar"></div>
@@ -474,9 +549,9 @@
             </div>
         </div>
 
-        <!-- QUESTÕES -->
+        <!-- QUESTÕES (igual ao anterior, mantive a estrutura) -->
         <div id="questions-container" class="questions-grid">
-            <!-- Questão 1 (sem imagem) -->
+            <!-- Questão 1 -->
             <div class="question-card" id="q1-card">
                 <div class="question-header">
                     <div class="question-num">1</div>
@@ -739,29 +814,30 @@
         </div>
     </div>
 
-    <!-- MathJax para renderizar fórmulas -->
+    <!-- MathJax -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <script>
         (function() {
-            // ----- GABARITO (conforme fornecido anteriormente) -----
+            // ----- GABARITO -----
             const GABARITO = {
                 q1: 'A', q2: 'C', q3: 'D', q4: 'C', q5: 'D',
                 q6: 'A', q7: 'C', q8: 'B', q9: 'C', q10: 'C',
                 q11: 'C', q12: 'D', q13: 'A', q14: 'B', q15: 'D'
             };
 
-            // Estado das respostas
+            // Estado
             let respostas = {};
             let corrigido = false;
             let timerInterval = null;
             let secondsLeft = 600; // 10 minutos
             const totalQuestions = 15;
 
-            // Elementos DOM
-            const correctSpan = document.getElementById('correct-count');
-            const timerDisplay = document.getElementById('timer-display');
+            // Elementos principais
+            const correctSpan = document.getElementById('sticky-correct');
+            const timerDisplay = document.getElementById('sticky-timer');
             const timerMessage = document.getElementById('timer-message');
             const progressBar = document.getElementById('progress-bar');
+            const stickyProgress = document.getElementById('sticky-progress');
             const resetBtn = document.getElementById('resetBtn');
             const checkAllBtn = document.getElementById('checkAllBtn');
             const showResultsBtn = document.getElementById('showResultsBtn');
@@ -772,20 +848,18 @@
             const finalUnanswered = document.getElementById('finalUnanswered');
             const closeResultBtn = document.getElementById('closeResultBtn');
 
-            // Inicializar: carregar event listeners nas opções
+            // Inicializar listeners nas opções
             function initOptions() {
                 for (let i = 1; i <= totalQuestions; i++) {
                     const opts = document.querySelectorAll(`#q${i}-opts .option-btn`);
                     opts.forEach(opt => {
                         opt.addEventListener('click', function(e) {
-                            if (corrigido) return; // depois de corrigido, bloqueia alterações (opcional)
+                            if (corrigido) return; // depois de corrigido, bloqueia (opcional)
                             const questao = `q${i}`;
                             const valor = this.dataset.opt;
-                            // Remover selecionada dos irmãos
                             opts.forEach(o => o.classList.remove('selected'));
                             this.classList.add('selected');
                             respostas[questao] = valor;
-                            // Limpar feedback antigo
                             document.getElementById(`fb-q${i}`).className = 'feedback';
                             document.getElementById(`fb-q${i}`).innerHTML = '';
                             updateProgress();
@@ -794,12 +868,12 @@
                 }
             }
 
-            // Atualizar barra de progresso
+            // Atualizar barra de progresso e contador de respondidas
             function updateProgress() {
                 const answered = Object.keys(respostas).length;
                 const percent = (answered / totalQuestions) * 100;
                 progressBar.style.width = percent + '%';
-                // Se já tiver corrigido, atualiza contador de corretas
+                stickyProgress.style.width = percent + '%';
                 if (corrigido) {
                     let correct = 0;
                     for (let q in GABARITO) {
@@ -811,7 +885,7 @@
                 }
             }
 
-            // Corrigir todas as questões
+            // Corrigir todas
             function corrigirTodas() {
                 corrigido = true;
                 let correctCount = 0;
@@ -819,7 +893,6 @@
                     const q = `q${i}`;
                     const resposta = respostas[q];
                     const fbDiv = document.getElementById(`fb-q${i}`);
-                    
                     if (!resposta) {
                         fbDiv.className = 'feedback incorrect';
                         fbDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Não respondida. Correta: ' + GABARITO[q];
@@ -836,7 +909,7 @@
                 updateProgress();
             }
 
-            // Calcular estatísticas finais
+            // Estatísticas
             function getStats() {
                 let correct = 0, wrong = 0, unanswered = 0;
                 for (let i = 1; i <= totalQuestions; i++) {
@@ -848,7 +921,7 @@
                 return { correct, wrong, unanswered };
             }
 
-            // Mostrar painel de resultados
+            // Mostrar resultados
             function showResults() {
                 if (!corrigido) {
                     if (confirm('Ainda não corrigiste as respostas. Pretendes corrigir agora?')) {
@@ -865,11 +938,10 @@
                 finalResultDiv.style.display = 'flex';
             }
 
-            // Reiniciar tudo
+            // Reiniciar
             function resetQuiz() {
                 respostas = {};
                 corrigido = false;
-                // Limpar seleções
                 for (let i = 1; i <= totalQuestions; i++) {
                     const opts = document.querySelectorAll(`#q${i}-opts .option-btn`);
                     opts.forEach(o => o.classList.remove('selected'));
@@ -879,7 +951,6 @@
                 correctSpan.innerText = '0';
                 updateProgress();
                 finalResultDiv.style.display = 'none';
-                // Reiniciar timer
                 secondsLeft = 600;
                 updateTimerDisplay();
             }
@@ -927,4 +998,3 @@
     </script>
 </body>
 </html>
-
