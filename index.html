@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-    <!-- MathJax para frações bonitas -->
+    <!-- MathJax -->
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
         /* Variáveis CSS para light/dark mode */
@@ -217,13 +217,11 @@
         body.dark-mode .theme-toggle-btn i {
             color: #a0b3d9;
         }
-        /* Ícone sol/lua - alternamos via JS */
         .theme-toggle-btn .fa-sun { display: inline-block; }
         .theme-toggle-btn .fa-moon { display: none; }
         body.dark-mode .theme-toggle-btn .fa-sun { display: none; }
         body.dark-mode .theme-toggle-btn .fa-moon { display: inline-block; }
 
-        /* Barra de progresso flexível */
         .progress-container-fixed {
             flex: 1;
             background: rgba(128, 128, 128, 0.2);
@@ -395,21 +393,20 @@
             text-align: center;
             background: var(--figure-bg);
             border-radius: 2rem;
-            /* padding removido */
             border: 1px dashed var(--figure-border);
             backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* garante que a borda arredondada corte a imagem */
+            overflow: hidden;
         }
 
         .figure img {
             max-width: 100%;
-            max-height: 600px; /* aumentado para ficar maior */
+            max-height: 600px;
             width: auto;
             height: auto;
-            border-radius: 1.8rem; /* mantém arredondamento na imagem */
+            border-radius: 1.8rem;
             box-shadow: 0 20px 30px -10px var(--shadow-color);
             display: block;
         }
@@ -421,7 +418,7 @@
             gap: 1rem;
             color: var(--text-soft);
             font-size: 1.2rem;
-            padding: 2rem; /* só para o placeholder ter espaçamento */
+            padding: 2rem;
         }
         .figure-placeholder i {
             font-size: 4rem;
@@ -451,6 +448,9 @@
             gap: 0.8rem;
             backdrop-filter: blur(5px);
             -webkit-tap-highlight-color: transparent;
+            user-select: none; /* impede seleção de texto ao arrastar */
+            -webkit-user-select: none;
+            -webkit-touch-callout: none; /* impede menu ao segurar */
         }
 
         .option-btn:hover:not(.disabled-option) {
@@ -543,6 +543,8 @@
             min-width: 140px;
             justify-content: center;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .btn-primary {
@@ -692,7 +694,7 @@
             </div>
         </div>
         <div class="header-right">
-            <!-- Botão toggle manual (funciona em todos os navegadores) -->
+            <!-- Botão toggle manual -->
             <div class="theme-toggle-btn" id="themeToggleBtn">
                 <div class="slider-btn">
                     <i class="fas fa-sun"></i>
@@ -724,13 +726,13 @@
             </div>
         </div>
 
-        <!-- QUESTÕES COM FRAÇÕES NO FORMATO LaTeX (igual ao original) -->
+        <!-- QUESTÕES COM FRAÇÕES (MathJax) -->
         <div id="questions-container" class="questions-grid">
             <!-- Questão 1 -->
             <div class="question-card" id="q1-card">
                 <div class="question-header">
                     <div class="question-num">1</div>
-                    <div class="question-text">\(\frac{3}{5} \div (-2)\) é igual a:</div>
+                    <div class="question-text">O valor de \(\frac{3}{5} \div (-2)\) é igual a:</div>
                 </div>
                 <div class="options-grid" id="q1-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(-\frac{3}{10}\)</div>
@@ -763,7 +765,7 @@
             <div class="question-card" id="q3-card">
                 <div class="question-header">
                     <div class="question-num">3</div>
-                    <div class="question-text">\(\left(-\frac{3}{4}\right) \div \frac{1}{4} \times (-1)\)</div>
+                    <div class="question-text">Qual é o valor de \(\left(-\frac{3}{4}\right) \div \frac{1}{4} \times (-1)\) ?</div>
                 </div>
                 <div class="options-grid" id="q3-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 48</div>
@@ -778,13 +780,13 @@
             <div class="question-card" id="q4-card">
                 <div class="question-header">
                     <div class="question-num">4</div>
-                    <div class="question-text">7 milhões \(\times 21\times 10^5\)</div>
+                    <div class="question-text">O produto de 7 milhões por \(21 \times 10^5\) é:</div>
                 </div>
                 <div class="options-grid" id="q4-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(147\times 10^5\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(7\times 21\times 10^9\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(7\times 21\times 10^{11}\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(1,47\times 10^7\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(147 \times 10^5\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(7 \times 21 \times 10^9\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(7 \times 21 \times 10^{11}\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(1,47 \times 10^7\)</div>
                 </div>
                 <div class="feedback" id="fb-q4"></div>
             </div>
@@ -793,7 +795,7 @@
             <div class="question-card" id="q5-card">
                 <div class="question-header">
                     <div class="question-num">5</div>
-                    <div class="question-text">\(10^4\times5^3\times10^2\times2^3\)</div>
+                    <div class="question-text">Qual dos números representa o produto \(10^4 \times 5^3 \times 10^2 \times 2^3\) ?</div>
                 </div>
                 <div class="options-grid" id="q5-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(10^6\)</div>
@@ -814,10 +816,10 @@
                     <img src="media/image2.png" alt="Reta" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem da reta</span></div>'; this.style.display='none';">
                 </div>
                 <div class="options-grid" id="q6-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(12x+9\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(2x-3\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(3-2x\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(7x+3\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(12x + 9\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(2x - 3\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(3 - 2x\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(7x + 3\)</div>
                 </div>
                 <div class="feedback" id="fb-q6"></div>
             </div>
@@ -877,13 +879,13 @@
             <div class="question-card" id="q10-card">
                 <div class="question-header">
                     <div class="question-num">10</div>
-                    <div class="question-text">O número -1 é solução de qual das equações seguintes?</div>
+                    <div class="question-text">O número –1 é solução de qual das equações seguintes?</div>
                 </div>
                 <div class="options-grid" id="q10-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(3+3x=10\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(15x-x=6x+8\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(13x-7=12x-8\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(22x-22=15x-15\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(3 + 3x = 10\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(15x - x = 6x + 8\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(13x - 7 = 12x - 8\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(22x - 22 = 15x - 15\)</div>
                 </div>
                 <div class="feedback" id="fb-q10"></div>
             </div>
@@ -925,7 +927,7 @@
             <div class="question-card" id="q13-card">
                 <div class="question-header">
                     <div class="question-num">13</div>
-                    <div class="question-text">\(3+a-(-b)+1\) para \(a=-2\) e \(b=2\) é:</div>
+                    <div class="question-text">O valor numérico da expressão \(3 + a - (-b) + 1\) para \(a = -2\) e \(b = 2\) é:</div>
                 </div>
                 <div class="options-grid" id="q13-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 4</div>
@@ -1034,29 +1036,13 @@
             themeToggleBtn.addEventListener('click', function() {
                 document.body.classList.toggle('dark-mode');
             });
-            themeToggleBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                document.body.classList.toggle('dark-mode');
-            });
 
-            // Inicializar listeners nas opções
+            // Inicializar listeners nas opções (apenas clique, sem touchstart extra)
             function initOptions() {
                 for (let i = 1; i <= totalQuestions; i++) {
                     const opts = document.querySelectorAll(`#q${i}-opts .option-btn`);
                     opts.forEach(opt => {
                         opt.addEventListener('click', function(e) {
-                            if (corrigido) return;
-                            const questao = `q${i}`;
-                            const valor = this.dataset.opt;
-                            opts.forEach(o => o.classList.remove('selected'));
-                            this.classList.add('selected');
-                            respostas[questao] = valor;
-                            document.getElementById(`fb-q${i}`).className = 'feedback';
-                            document.getElementById(`fb-q${i}`).innerHTML = '';
-                            updateProgress();
-                        });
-                        opt.addEventListener('touchstart', function(e) {
-                            e.preventDefault();
                             if (corrigido) return;
                             const questao = `q${i}`;
                             const valor = this.dataset.opt;
@@ -1138,20 +1124,18 @@
                 }
             }
 
-            // Função para parar o timer atual e iniciar um novo
-            function restartTimer() {
+            function resetQuiz() {
+                // Para o timer atual
                 if (timerInterval) {
                     clearInterval(timerInterval);
                     timerInterval = null;
                 }
-                secondsLeft = 600;
-                updateTimerDisplay();
-                startTimer();
-            }
-
-            function resetQuiz() {
+                // Reinicia estado
                 respostas = {};
                 corrigido = false;
+                secondsLeft = 600;
+                updateTimerDisplay();
+
                 for (let i = 1; i <= totalQuestions; i++) {
                     const opts = document.querySelectorAll(`#q${i}-opts .option-btn`);
                     opts.forEach(o => o.classList.remove('selected'));
@@ -1161,8 +1145,9 @@
                 correctSpan.innerText = '0';
                 updateProgress();
                 finalResultDiv.style.display = 'none';
-                // Reiniciar o timer
-                restartTimer();
+
+                // Reinicia o timer
+                startTimer();
             }
 
             function updateTimerDisplay() {
@@ -1192,14 +1177,8 @@
             }
 
             resetBtn.addEventListener('click', resetQuiz);
-            resetBtn.addEventListener('touchstart', (e) => { e.preventDefault(); resetQuiz(); });
             finalizeBtn.addEventListener('click', finalizarEExibir);
-            finalizeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); finalizarEExibir(); });
             closeResultBtn.addEventListener('click', () => {
-                finalResultDiv.style.display = 'none';
-            });
-            closeResultBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
                 finalResultDiv.style.display = 'none';
             });
 
