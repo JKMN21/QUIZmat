@@ -10,6 +10,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <!-- Canvas Confetti -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+    <!-- MathJax para frações bonitas -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <style>
         /* Variáveis CSS para light/dark mode */
         :root {
@@ -651,10 +653,10 @@
                 font-size: 1.1rem;
             }
             .figure img {
-                max-height: 350px; /* um pouco menor no mobile mas ainda grande */
+                max-height: 350px;
             }
             .figure {
-                padding: 0; /* mantém sem padding */
+                padding: 0;
             }
             .action-bar {
                 flex-direction: column;
@@ -722,19 +724,19 @@
             </div>
         </div>
 
-        <!-- QUESTÕES EXATAMENTE COMO NO PDF -->
+        <!-- QUESTÕES COM FRAÇÕES NO FORMATO LaTeX (igual ao original) -->
         <div id="questions-container" class="questions-grid">
             <!-- Questão 1 -->
             <div class="question-card" id="q1-card">
                 <div class="question-header">
                     <div class="question-num">1</div>
-                    <div class="question-text">O valor de 3 5 ÷ (− 2) é igual a:</div>
+                    <div class="question-text">\(\frac{3}{5} \div (-2)\) é igual a:</div>
                 </div>
                 <div class="options-grid" id="q1-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> − 3 10</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 3 10</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 6 10</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> − 6 10</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(-\frac{3}{10}\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(\frac{3}{10}\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(\frac{6}{10}\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(-\frac{6}{10}\)</div>
                 </div>
                 <div class="feedback" id="fb-q1"></div>
             </div>
@@ -743,16 +745,16 @@
             <div class="question-card" id="q2-card">
                 <div class="question-header">
                     <div class="question-num">2</div>
-                    <div class="question-text">Na figura, o quadrilátero [ABCD] o quadrilátero é um papagaio. Sabendo que AC = 2 m e BD = 1,5 m. Qual é, em metros quadrados, a área do papagaio?</div>
+                    <div class="question-text">Na figura, o quadrilátero [ABCD] é um papagaio. Sabendo que AC = 2 m e BD = 1,5 m. Qual é, em metros quadrados, a área do papagaio?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image1.png" alt="Papagaio" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem do papagaio</span></div>'; this.style.display='none';">
                 </div>
                 <div class="options-grid" id="q2-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3 m2</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 2 m2</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 1,5 m2</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 0,75 m2</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(3 m^2\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(2 m^2\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(1,5 m^2\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(0,75 m^2\)</div>
                 </div>
                 <div class="feedback" id="fb-q2"></div>
             </div>
@@ -761,12 +763,12 @@
             <div class="question-card" id="q3-card">
                 <div class="question-header">
                     <div class="question-num">3</div>
-                    <div class="question-text">Qual é o valor de (− 3 4 ) ÷ 1 4 × (− 1 ) ?</div>
+                    <div class="question-text">\(\left(-\frac{3}{4}\right) \div \frac{1}{4} \times (-1)\)</div>
                 </div>
                 <div class="options-grid" id="q3-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 48</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> − 3</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> - 48</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> -3</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> -48</div>
                     <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 3</div>
                 </div>
                 <div class="feedback" id="fb-q3"></div>
@@ -776,13 +778,13 @@
             <div class="question-card" id="q4-card">
                 <div class="question-header">
                     <div class="question-num">4</div>
-                    <div class="question-text">O produto de 7 milhões por 21×10 5 é:</div>
+                    <div class="question-text">7 milhões \(\times 21\times 10^5\)</div>
                 </div>
                 <div class="options-grid" id="q4-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 147×10 5</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 7×21×10 9</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 7×21×10 11</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 1,47×10 7</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(147\times 10^5\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(7\times 21\times 10^9\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(7\times 21\times 10^{11}\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(1,47\times 10^7\)</div>
                 </div>
                 <div class="feedback" id="fb-q4"></div>
             </div>
@@ -791,13 +793,13 @@
             <div class="question-card" id="q5-card">
                 <div class="question-header">
                     <div class="question-num">5</div>
-                    <div class="question-text">Qual dos números representa o produto 10 4 × 5 3 × 10 2 × 2 3</div>
+                    <div class="question-text">\(10^4\times5^3\times10^2\times2^3\)</div>
                 </div>
                 <div class="options-grid" id="q5-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 10 6</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 10 7</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 10 8</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 10 9</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(10^6\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(10^7\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(10^8\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(10^9\)</div>
                 </div>
                 <div class="feedback" id="fb-q5"></div>
             </div>
@@ -806,16 +808,16 @@
             <div class="question-card" id="q6-card">
                 <div class="question-header">
                     <div class="question-num">6</div>
-                    <div class="question-text">Observa a figura, em que os pontos A, B e C pertencem à mesma reta. Qual das seguintes expressões representa a distância ente A e C?</div>
+                    <div class="question-text">Observa a figura, em que os pontos A, B e C pertencem à mesma reta. Qual das seguintes expressões representa a distância entre A e C?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image2.png" alt="Reta" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem da reta</span></div>'; this.style.display='none';">
                 </div>
                 <div class="options-grid" id="q6-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 12x + 9</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 2x − 3</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 3 − 2x</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 7x + 3</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(12x+9\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(2x-3\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(3-2x\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(7x+3\)</div>
                 </div>
                 <div class="feedback" id="fb-q6"></div>
             </div>
@@ -827,10 +829,10 @@
                     <div class="question-text">A percentagem da letra A na palavra MATEMÁTICA é:</div>
                 </div>
                 <div class="options-grid" id="q7-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 0,03 %</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 3 %</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 30 %</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 70 %</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(0,03\%\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(3\%\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(30\%\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(70\%\)</div>
                 </div>
                 <div class="feedback" id="fb-q7"></div>
             </div>
@@ -875,13 +877,13 @@
             <div class="question-card" id="q10-card">
                 <div class="question-header">
                     <div class="question-num">10</div>
-                    <div class="question-text">O número – 1 é solução de qual das equações seguintes?</div>
+                    <div class="question-text">O número -1 é solução de qual das equações seguintes?</div>
                 </div>
                 <div class="options-grid" id="q10-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3 + 3x = 10</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 15x − x = 6x + 8</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 13x − 7 = 12x − 8</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 22x − 22 = 15x − 15</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(3+3x=10\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(15x-x=6x+8\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(13x-7=12x-8\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(22x-22=15x-15\)</div>
                 </div>
                 <div class="feedback" id="fb-q10"></div>
             </div>
@@ -908,13 +910,13 @@
             <div class="question-card" id="q12-card">
                 <div class="question-header">
                     <div class="question-num">12</div>
-                    <div class="question-text">A Cátia comeu 1 de uma tarte e o Júlio comeu 1 da mesma tarte. Que parte 5 4 da tarte sobrou?</div>
+                    <div class="question-text">A Cátia comeu \(\frac{1}{5}\) de uma tarte e o Júlio comeu \(\frac{1}{4}\) da mesma tarte. Que parte da tarte sobrou?</div>
                 </div>
                 <div class="options-grid" id="q12-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 9 20</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 2 3</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 7 9</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 11 20</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(\frac{9}{20}\)</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(\frac{2}{3}\)</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(\frac{7}{9}\)</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(\frac{11}{20}\)</div>
                 </div>
                 <div class="feedback" id="fb-q12"></div>
             </div>
@@ -923,7 +925,7 @@
             <div class="question-card" id="q13-card">
                 <div class="question-header">
                     <div class="question-num">13</div>
-                    <div class="question-text">O valor numérico da expressão 3 + a − (− b) + 1 para a = − 2 e b = 2 é:</div>
+                    <div class="question-text">\(3+a-(-b)+1\) para \(a=-2\) e \(b=2\) é:</div>
                 </div>
                 <div class="options-grid" id="q13-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 4</div>
@@ -938,7 +940,7 @@
             <div class="question-card" id="q14-card">
                 <div class="question-header">
                     <div class="question-num">14</div>
-                    <div class="question-text">O Miguel foi ao bar da escola, mas como não tinha dinheiro ficou a dever 2,30 euros. No dia seguinte a mãe deu lhe 5 euros. O Miguel pagou a divida e ainda pediu uma sandes que custava 0,80 euros. Com quanto dinheiro ficou no final?</div>
+                    <div class="question-text">O Miguel foi ao bar da escola, mas como não tinha dinheiro ficou a dever 2,30 euros. No dia seguinte a mãe deu-lhe 5 euros. O Miguel pagou a dívida e ainda pediu uma sandes que custava 0,80 euros. Com quanto dinheiro ficou no final?</div>
                 </div>
                 <div class="options-grid" id="q14-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3,5 euros</div>
@@ -996,10 +998,9 @@
         </div>
     </div>
 
-    <!-- MathJax não necessário -->
     <script>
         (function() {
-            // ----- RESPOSTAS ----- (mantidas as mesmas)
+            // ----- RESPOSTAS -----
             const RESPOSTAS = {
                 q1: 'A', q2: 'C', q3: 'D', q4: 'C', q5: 'D',
                 q6: 'A', q7: 'C', q8: 'B', q9: 'C', q10: 'C',
@@ -1137,6 +1138,17 @@
                 }
             }
 
+            // Função para parar o timer atual e iniciar um novo
+            function restartTimer() {
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                }
+                secondsLeft = 600;
+                updateTimerDisplay();
+                startTimer();
+            }
+
             function resetQuiz() {
                 respostas = {};
                 corrigido = false;
@@ -1149,8 +1161,8 @@
                 correctSpan.innerText = '0';
                 updateProgress();
                 finalResultDiv.style.display = 'none';
-                secondsLeft = 600;
-                updateTimerDisplay();
+                // Reiniciar o timer
+                restartTimer();
             }
 
             function updateTimerDisplay() {
