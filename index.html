@@ -13,7 +13,6 @@
     <style>
         /* Variáveis CSS para light/dark mode */
         :root {
-            /* Light mode (padrão) */
             --bg-gradient-start: #f0f4fa;
             --bg-gradient-end: #d9e2ef;
             --header-bg: rgba(255, 255, 255, 0.6);
@@ -41,7 +40,7 @@
             --figure-bg: rgba(255, 255, 255, 0.4);
             --figure-border: #c6d9ff;
             --toggle-bg: #e0e5ec;
-            --toggle-slider: #ffffff;
+            --toggle-btn: #ffffff;
         }
 
         body.dark-mode {
@@ -72,7 +71,7 @@
             --figure-bg: rgba(0, 15, 30, 0.6);
             --figure-border: #3b82f6;
             --toggle-bg: #2a3440;
-            --toggle-slider: #8ca3c7;
+            --toggle-btn: #8ca3c7;
         }
 
         * {
@@ -98,7 +97,7 @@
             width: 100%;
         }
 
-        /* Header fixo com efeito glass - ajustado */
+        /* Header fixo com efeito glass */
         .header-fixed {
             position: fixed;
             top: 0;
@@ -179,69 +178,48 @@
             min-width: 200px;
         }
 
-        /* Toggle slider estilo iOS */
-        .theme-switch {
-            position: relative;
-            display: inline-block;
+        /* Botão toggle manual (substitui o checkbox problemático no iOS) */
+        .theme-toggle-btn {
             width: 52px;
             height: 28px;
-            flex-shrink: 0;
-        }
-        .theme-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
             background-color: var(--toggle-bg);
-            transition: 0.3s;
             border-radius: 34px;
+            border: 1px solid var(--header-border);
+            position: relative;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background-color 0.3s;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
         }
-        .slider:before {
+        .theme-toggle-btn .slider-btn {
             position: absolute;
-            content: "";
-            height: 24px;
-            width: 24px;
+            top: 2px;
             left: 2px;
-            bottom: 2px;
-            background-color: var(--toggle-slider);
-            transition: 0.3s;
+            width: 24px;
+            height: 24px;
+            background-color: var(--toggle-btn);
             border-radius: 50%;
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
-        input:checked + .slider:before {
+        body.dark-mode .theme-toggle-btn .slider-btn {
             transform: translateX(24px);
         }
-        .slider i {
-            position: absolute;
-            top: 5px;
+        .theme-toggle-btn i {
             font-size: 14px;
-            transition: 0.3s;
-            pointer-events: none;
-        }
-        .slider .fa-sun {
-            left: 6px;
             color: #fbbf24;
-            opacity: 0;
         }
-        .slider .fa-moon {
-            right: 6px;
+        body.dark-mode .theme-toggle-btn i {
             color: #a0b3d9;
-            opacity: 1;
         }
-        input:checked + .slider .fa-sun {
-            opacity: 1;
-        }
-        input:checked + .slider .fa-moon {
-            opacity: 0;
-        }
+        /* Ícone sol/lua - alternamos via JS */
+        .theme-toggle-btn .fa-sun { display: inline-block; }
+        .theme-toggle-btn .fa-moon { display: none; }
+        body.dark-mode .theme-toggle-btn .fa-sun { display: none; }
+        body.dark-mode .theme-toggle-btn .fa-moon { display: inline-block; }
 
         /* Barra de progresso flexível */
         .progress-container-fixed {
@@ -268,7 +246,6 @@
             font-weight: 600;
         }
 
-        /* Header original com glass */
         .header {
             background: var(--card-bg);
             backdrop-filter: blur(20px) saturate(180%);
@@ -359,14 +336,12 @@
             color: #fbbf24;
         }
 
-        /* Grid das questões */
         .questions-grid {
             display: flex;
             flex-direction: column;
             gap: 1.8rem;
         }
 
-        /* Card da questão com liquid glass */
         .question-card {
             background: var(--card-bg);
             backdrop-filter: blur(20px) saturate(180%);
@@ -412,23 +387,29 @@
             letter-spacing: -0.01em;
         }
 
+        /* FIGURA: sem padding, apenas borda tracejada e fundo */
         .figure {
             margin: 1.5rem 0;
             text-align: center;
             background: var(--figure-bg);
             border-radius: 2rem;
-            padding: 2rem;
+            /* padding removido */
             border: 1px dashed var(--figure-border);
             backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* garante que a borda arredondada corte a imagem */
         }
 
         .figure img {
             max-width: 100%;
-            max-height: 400px;
+            max-height: 600px; /* aumentado para ficar maior */
             width: auto;
             height: auto;
-            border-radius: 1.2rem;
+            border-radius: 1.8rem; /* mantém arredondamento na imagem */
             box-shadow: 0 20px 30px -10px var(--shadow-color);
+            display: block;
         }
 
         .figure-placeholder {
@@ -438,6 +419,7 @@
             gap: 1rem;
             color: var(--text-soft);
             font-size: 1.2rem;
+            padding: 2rem; /* só para o placeholder ter espaçamento */
         }
         .figure-placeholder i {
             font-size: 4rem;
@@ -466,6 +448,7 @@
             align-items: center;
             gap: 0.8rem;
             backdrop-filter: blur(5px);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .option-btn:hover:not(.disabled-option) {
@@ -526,12 +509,11 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Barra de ações - ajustada para centralizar os botões */
         .action-bar {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            justify-content: center; /* centraliza os botões */
+            justify-content: center;
             align-items: center;
             margin-top: 2.5rem;
             background: var(--card-bg);
@@ -541,7 +523,6 @@
             border: 1px solid var(--card-border);
         }
 
-        /* Opcional: garantir que os botões tenham um tamanho mínimo consistente */
         .btn {
             padding: 0.9rem 2rem;
             border-radius: 3rem;
@@ -557,8 +538,9 @@
             color: var(--text-primary);
             border: 1px solid var(--btn-outline-border);
             backdrop-filter: blur(5px);
-            min-width: 140px; /* largura mínima para evitar que fiquem muito pequenos */
+            min-width: 140px;
             justify-content: center;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary {
@@ -633,7 +615,6 @@
             50% { opacity: 0.5; }
         }
 
-        /* Responsividade para iPhone e telas pequenas */
         @media (max-width: 700px) {
             body {
                 padding-top: 140px;
@@ -670,24 +651,24 @@
                 font-size: 1.1rem;
             }
             .figure img {
-                max-height: 250px;
+                max-height: 350px; /* um pouco menor no mobile mas ainda grande */
             }
             .figure {
-                padding: 1rem;
+                padding: 0; /* mantém sem padding */
             }
             .action-bar {
-                flex-direction: column; /* empilha os botões em telas pequenas */
+                flex-direction: column;
                 padding: 1rem;
             }
             .btn {
-                width: 100%; /* ocupam toda a largura */
+                width: 100%;
                 min-width: auto;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header fixo com slider à esquerda da barra de progresso -->
+    <!-- Header fixo com slider manual à esquerda da barra de progresso -->
     <div class="header-fixed" id="stickyHeader">
         <div class="header-left">
             <h2>mathquiz</h2>
@@ -709,14 +690,13 @@
             </div>
         </div>
         <div class="header-right">
-            <!-- Slider toggle light/dark mode -->
-            <label class="theme-switch">
-                <input type="checkbox" id="themeToggleCheckbox">
-                <span class="slider">
+            <!-- Botão toggle manual (funciona em todos os navegadores) -->
+            <div class="theme-toggle-btn" id="themeToggleBtn">
+                <div class="slider-btn">
                     <i class="fas fa-sun"></i>
                     <i class="fas fa-moon"></i>
-                </span>
-            </label>
+                </div>
+            </div>
             <!-- Barra de progresso -->
             <div class="progress-container-fixed">
                 <div class="progress-fill-fixed" id="sticky-progress"></div>
@@ -742,117 +722,124 @@
             </div>
         </div>
 
-        <!-- QUESTÕES (mantidas iguais) -->
+        <!-- QUESTÕES EXATAMENTE COMO NO PDF -->
         <div id="questions-container" class="questions-grid">
             <!-- Questão 1 -->
             <div class="question-card" id="q1-card">
                 <div class="question-header">
                     <div class="question-num">1</div>
-                    <div class="question-text">\(\frac{3}{5} \div (-2)\) é igual a:</div>
+                    <div class="question-text">O valor de 3 5 ÷ (− 2) é igual a:</div>
                 </div>
                 <div class="options-grid" id="q1-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(-\frac{3}{10}\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(\frac{3}{10}\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(\frac{6}{10}\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(-\frac{6}{10}\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> − 3 10</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 3 10</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 6 10</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> − 6 10</div>
                 </div>
                 <div class="feedback" id="fb-q1"></div>
             </div>
-            <!-- Questão 2 com imagem -->
+
+            <!-- Questão 2 -->
             <div class="question-card" id="q2-card">
                 <div class="question-header">
                     <div class="question-num">2</div>
-                    <div class="question-text">Papagaio [ABCD] · AC=2m, BD=1,5m</div>
+                    <div class="question-text">Na figura, o quadrilátero [ABCD] o quadrilátero é um papagaio. Sabendo que AC = 2 m e BD = 1,5 m. Qual é, em metros quadrados, a área do papagaio?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image1.png" alt="Papagaio" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem do papagaio</span></div>'; this.style.display='none';">
                 </div>
                 <div class="options-grid" id="q2-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(3m^2\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(2m^2\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(1,5m^2\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(0,75m^2\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3 m2</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 2 m2</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 1,5 m2</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 0,75 m2</div>
                 </div>
                 <div class="feedback" id="fb-q2"></div>
             </div>
+
             <!-- Questão 3 -->
             <div class="question-card" id="q3-card">
                 <div class="question-header">
                     <div class="question-num">3</div>
-                    <div class="question-text">\(\left(-\frac{3}{4}\right) \div \frac{1}{4} \times (-1)\)</div>
+                    <div class="question-text">Qual é o valor de (− 3 4 ) ÷ 1 4 × (− 1 ) ?</div>
                 </div>
                 <div class="options-grid" id="q3-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 48</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> -3</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> -48</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> − 3</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> - 48</div>
                     <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 3</div>
                 </div>
                 <div class="feedback" id="fb-q3"></div>
             </div>
+
             <!-- Questão 4 -->
             <div class="question-card" id="q4-card">
                 <div class="question-header">
                     <div class="question-num">4</div>
-                    <div class="question-text">7 milhões \(\times 21\times 10^5\)</div>
+                    <div class="question-text">O produto de 7 milhões por 21×10 5 é:</div>
                 </div>
                 <div class="options-grid" id="q4-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(147\times 10^5\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(7\times 21\times 10^9\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(7\times 21\times 10^{11}\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(1,47\times 10^7\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 147×10 5</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 7×21×10 9</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 7×21×10 11</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 1,47×10 7</div>
                 </div>
                 <div class="feedback" id="fb-q4"></div>
             </div>
+
             <!-- Questão 5 -->
             <div class="question-card" id="q5-card">
                 <div class="question-header">
                     <div class="question-num">5</div>
-                    <div class="question-text">\(10^4\times5^3\times10^2\times2^3\)</div>
+                    <div class="question-text">Qual dos números representa o produto 10 4 × 5 3 × 10 2 × 2 3</div>
                 </div>
                 <div class="options-grid" id="q5-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(10^6\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(10^7\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(10^8\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(10^9\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 10 6</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 10 7</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 10 8</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 10 9</div>
                 </div>
                 <div class="feedback" id="fb-q5"></div>
             </div>
-            <!-- Questão 6 com imagem -->
+
+            <!-- Questão 6 -->
             <div class="question-card" id="q6-card">
                 <div class="question-header">
                     <div class="question-num">6</div>
-                    <div class="question-text">Distância AC (mesma reta)</div>
+                    <div class="question-text">Observa a figura, em que os pontos A, B e C pertencem à mesma reta. Qual das seguintes expressões representa a distância ente A e C?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image2.png" alt="Reta" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem da reta</span></div>'; this.style.display='none';">
                 </div>
                 <div class="options-grid" id="q6-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(12x+9\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(2x-3\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(3-2x\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(7x+3\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 12x + 9</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 2x − 3</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 3 − 2x</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 7x + 3</div>
                 </div>
                 <div class="feedback" id="fb-q6"></div>
             </div>
+
             <!-- Questão 7 -->
             <div class="question-card" id="q7-card">
                 <div class="question-header">
                     <div class="question-num">7</div>
-                    <div class="question-text">% letra A em MATEMÁTICA</div>
+                    <div class="question-text">A percentagem da letra A na palavra MATEMÁTICA é:</div>
                 </div>
                 <div class="options-grid" id="q7-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(0,03\%\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(3\%\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(30\%\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(70\%\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 0,03 %</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 3 %</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 30 %</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 70 %</div>
                 </div>
                 <div class="feedback" id="fb-q7"></div>
             </div>
-            <!-- Questão 8 com imagem -->
+
+            <!-- Questão 8 -->
             <div class="question-card" id="q8-card">
                 <div class="question-header">
                     <div class="question-num">8</div>
-                    <div class="question-text">Perímetro fig.4 (quadrados)</div>
+                    <div class="question-text">A figura representa uma sequência formada por quadrados. O perímetro da primeira figura é 40 cm. Qual é o perímetro da figura 4?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image3.png" alt="Quadrados" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem sequência</span></div>'; this.style.display='none';">
@@ -865,11 +852,12 @@
                 </div>
                 <div class="feedback" id="fb-q8"></div>
             </div>
-            <!-- Questão 9 com imagem -->
+
+            <!-- Questão 9 -->
             <div class="question-card" id="q9-card">
                 <div class="question-header">
                     <div class="question-num">9</div>
-                    <div class="question-text">Balança com lápis (60g)</div>
+                    <div class="question-text">A Matilde conseguiu equilibrar uma balança distribuindo um peso de 60 g e 9 lápis de cor todos de igual massa pelos dois pratos. Qual é a massa de cada um dos lápis?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image4.png" alt="Balança1" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem balança</span></div>'; this.style.display='none';">
@@ -882,25 +870,27 @@
                 </div>
                 <div class="feedback" id="fb-q9"></div>
             </div>
+
             <!-- Questão 10 -->
             <div class="question-card" id="q10-card">
                 <div class="question-header">
                     <div class="question-num">10</div>
-                    <div class="question-text">Solução -1</div>
+                    <div class="question-text">O número – 1 é solução de qual das equações seguintes?</div>
                 </div>
                 <div class="options-grid" id="q10-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(3+3x=10\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(15x-x=6x+8\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(13x-7=12x-8\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(22x-22=15x-15\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3 + 3x = 10</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 15x − x = 6x + 8</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 13x − 7 = 12x − 8</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 22x − 22 = 15x − 15</div>
                 </div>
                 <div class="feedback" id="fb-q10"></div>
             </div>
-            <!-- Questão 11 com imagem -->
+
+            <!-- Questão 11 -->
             <div class="question-card" id="q11-card">
                 <div class="question-header">
                     <div class="question-num">11</div>
-                    <div class="question-text">Bombons (ordem 10)</div>
+                    <div class="question-text">Numa caixa, os bombons de chocolate branco estão dispostos entre filas de chocolate negro. Qual é o número total de bombons da caixa de ordem 10?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image5.png" alt="Bombons" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem bombons</span></div>'; this.style.display='none';">
@@ -913,25 +903,27 @@
                 </div>
                 <div class="feedback" id="fb-q11"></div>
             </div>
+
             <!-- Questão 12 -->
             <div class="question-card" id="q12-card">
                 <div class="question-header">
                     <div class="question-num">12</div>
-                    <div class="question-text">\(\frac{1}{5}+\frac{1}{4}\) da tarte</div>
+                    <div class="question-text">A Cátia comeu 1 de uma tarte e o Júlio comeu 1 da mesma tarte. Que parte 5 4 da tarte sobrou?</div>
                 </div>
                 <div class="options-grid" id="q12-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> \(\frac{9}{20}\)</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> \(\frac{2}{3}\)</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> \(\frac{7}{9}\)</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> \(\frac{11}{20}\)</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 9 20</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 2 3</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 7 9</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 11 20</div>
                 </div>
                 <div class="feedback" id="fb-q12"></div>
             </div>
+
             <!-- Questão 13 -->
             <div class="question-card" id="q13-card">
                 <div class="question-header">
                     <div class="question-num">13</div>
-                    <div class="question-text">\(3+a-(-b)+1\) p/ \(a=-2,b=2\)</div>
+                    <div class="question-text">O valor numérico da expressão 3 + a − (− b) + 1 para a = − 2 e b = 2 é:</div>
                 </div>
                 <div class="options-grid" id="q13-opts">
                     <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 4</div>
@@ -941,25 +933,27 @@
                 </div>
                 <div class="feedback" id="fb-q13"></div>
             </div>
+
             <!-- Questão 14 -->
             <div class="question-card" id="q14-card">
                 <div class="question-header">
                     <div class="question-num">14</div>
-                    <div class="question-text">Miguel: dívida €2,30, mãe €5, sandes €0,80</div>
+                    <div class="question-text">O Miguel foi ao bar da escola, mas como não tinha dinheiro ficou a dever 2,30 euros. No dia seguinte a mãe deu lhe 5 euros. O Miguel pagou a divida e ainda pediu uma sandes que custava 0,80 euros. Com quanto dinheiro ficou no final?</div>
                 </div>
                 <div class="options-grid" id="q14-opts">
-                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3,5€</div>
-                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 1,9€</div>
-                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 4,2€</div>
-                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 3,1€</div>
+                    <div class="option-btn" data-opt="A"><span class="option-prefix">A</span> 3,5 euros</div>
+                    <div class="option-btn" data-opt="B"><span class="option-prefix">B</span> 1,9 euros</div>
+                    <div class="option-btn" data-opt="C"><span class="option-prefix">C</span> 4,2 euros</div>
+                    <div class="option-btn" data-opt="D"><span class="option-prefix">D</span> 3,1 euros</div>
                 </div>
                 <div class="feedback" id="fb-q14"></div>
             </div>
-            <!-- Questão 15 com imagem -->
+
+            <!-- Questão 15 -->
             <div class="question-card" id="q15-card">
                 <div class="question-header">
                     <div class="question-num">15</div>
-                    <div class="question-text">Balança equilíbrio (bola azul)</div>
+                    <div class="question-text">Observa a balança que está em equilíbrio. Qual é a massa da bola azul?</div>
                 </div>
                 <div class="figure">
                     <img src="media/image6.png" alt="Balança2" onerror="this.parentElement.innerHTML+='<div class=\'figure-placeholder\'><i class=\'fas fa-image\' style=\'font-size:3rem; opacity:0.5;\'></i><span>Imagem balança 2</span></div>'; this.style.display='none';">
@@ -974,7 +968,7 @@
             </div>
         </div>
 
-        <!-- Barra de ações (reiniciar e finalizar) - agora centralizada -->
+        <!-- Barra de ações (reiniciar e finalizar) centralizada -->
         <div class="action-bar">
             <button class="btn btn-outline" id="resetBtn"><i class="fas fa-undo-alt"></i> Reiniciar</button>
             <button class="btn btn-primary" id="finalizeBtn"><i class="fas fa-check-circle"></i> Finalizar</button>
@@ -1002,11 +996,10 @@
         </div>
     </div>
 
-    <!-- MathJax -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <!-- MathJax não necessário -->
     <script>
         (function() {
-            // ----- RESPOSTAS -----
+            // ----- RESPOSTAS ----- (mantidas as mesmas)
             const RESPOSTAS = {
                 q1: 'A', q2: 'C', q3: 'D', q4: 'C', q5: 'D',
                 q6: 'A', q7: 'C', q8: 'B', q9: 'C', q10: 'C',
@@ -1034,15 +1027,15 @@
             const finalWrong = document.getElementById('finalWrong');
             const finalUnanswered = document.getElementById('finalUnanswered');
             const closeResultBtn = document.getElementById('closeResultBtn');
-            const themeToggle = document.getElementById('themeToggleCheckbox');
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
 
-            // Alternar tema via checkbox
-            themeToggle.addEventListener('change', function() {
-                if (this.checked) {
-                    document.body.classList.add('dark-mode');
-                } else {
-                    document.body.classList.remove('dark-mode');
-                }
+            // Alternar tema via botão manual
+            themeToggleBtn.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+            });
+            themeToggleBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                document.body.classList.toggle('dark-mode');
             });
 
             // Inicializar listeners nas opções
@@ -1051,6 +1044,18 @@
                     const opts = document.querySelectorAll(`#q${i}-opts .option-btn`);
                     opts.forEach(opt => {
                         opt.addEventListener('click', function(e) {
+                            if (corrigido) return;
+                            const questao = `q${i}`;
+                            const valor = this.dataset.opt;
+                            opts.forEach(o => o.classList.remove('selected'));
+                            this.classList.add('selected');
+                            respostas[questao] = valor;
+                            document.getElementById(`fb-q${i}`).className = 'feedback';
+                            document.getElementById(`fb-q${i}`).innerHTML = '';
+                            updateProgress();
+                        });
+                        opt.addEventListener('touchstart', function(e) {
+                            e.preventDefault();
                             if (corrigido) return;
                             const questao = `q${i}`;
                             const valor = this.dataset.opt;
@@ -1175,8 +1180,14 @@
             }
 
             resetBtn.addEventListener('click', resetQuiz);
+            resetBtn.addEventListener('touchstart', (e) => { e.preventDefault(); resetQuiz(); });
             finalizeBtn.addEventListener('click', finalizarEExibir);
+            finalizeBtn.addEventListener('touchstart', (e) => { e.preventDefault(); finalizarEExibir(); });
             closeResultBtn.addEventListener('click', () => {
+                finalResultDiv.style.display = 'none';
+            });
+            closeResultBtn.addEventListener('touchstart', (e) => {
+                e.preventDefault();
                 finalResultDiv.style.display = 'none';
             });
 
