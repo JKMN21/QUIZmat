@@ -818,11 +818,11 @@
     <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
     <script>
         (function() {
-            // ----- GABARITO -----
-            const GABARITO = {
+            // ----- RESPOSTAS -----
+            const RESPOSTAS = {
                 q1: 'A', q2: 'C', q3: 'D', q4: 'C', q5: 'D',
                 q6: 'A', q7: 'C', q8: 'B', q9: 'C', q10: 'C',
-                q11: 'C', q12: 'D', q13: 'A', q14: 'B', q15: 'D'
+                q11: 'B', q12: 'D', q13: 'A', q14: 'B', q15: 'D'
             };
 
             // Estado
@@ -876,8 +876,8 @@
                 stickyProgress.style.width = percent + '%';
                 if (corrigido) {
                     let correct = 0;
-                    for (let q in GABARITO) {
-                        if (respostas[q] === GABARITO[q]) correct++;
+                    for (let q in RESPOSTAS) {
+                        if (respostas[q] === RESPOSTAS[q]) correct++;
                     }
                     correctSpan.innerText = correct;
                 } else {
@@ -895,14 +895,14 @@
                     const fbDiv = document.getElementById(`fb-q${i}`);
                     if (!resposta) {
                         fbDiv.className = 'feedback incorrect';
-                        fbDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Não respondida. Correta: ' + GABARITO[q];
-                    } else if (resposta === GABARITO[q]) {
+                        fbDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Não respondida. Correta: ' + RESPOSTAS[q];
+                    } else if (resposta === RESPOSTAS[q]) {
                         fbDiv.className = 'feedback correct';
                         fbDiv.innerHTML = '<i class="fas fa-check-circle"></i> Correto!';
                         correctCount++;
                     } else {
                         fbDiv.className = 'feedback incorrect';
-                        fbDiv.innerHTML = `<i class="fas fa-times-circle"></i> Incorreto. Correta: ${GABARITO[q]}`;
+                        fbDiv.innerHTML = `<i class="fas fa-times-circle"></i> Incorreto. Correta: ${RESPOSTAS[q]}`;
                     }
                 }
                 correctSpan.innerText = correctCount;
@@ -915,7 +915,7 @@
                 for (let i = 1; i <= totalQuestions; i++) {
                     const q = `q${i}`;
                     if (!respostas[q]) unanswered++;
-                    else if (respostas[q] === GABARITO[q]) correct++;
+                    else if (respostas[q] === RESPOSTAS[q]) correct++;
                     else wrong++;
                 }
                 return { correct, wrong, unanswered };
@@ -998,4 +998,5 @@
     </script>
 </body>
 </html>
+
 
