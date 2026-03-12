@@ -362,15 +362,15 @@
         .question-header {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.2rem;
+            gap: 1.2rem; /* aumentado */
+            margin-bottom: 1.5rem; /* aumentado */
         }
 
         .question-num {
             background: var(--progress-fill);
-            width: 3.5rem;  /* aumentado */
-            height: 3.5rem;  /* aumentado */
-            border-radius: 1.5rem; /* ajustado */
+            width: 3.5rem; /* aumentado */
+            height: 3.5rem; /* aumentado */
+            border-radius: 1.4rem; /* ajustado */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -378,7 +378,7 @@
             font-size: 1.8rem; /* aumentado */
             color: white;
             box-shadow: 0 8px 18px var(--shadow-color);
-            flex-shrink: 0; /* impede que encolha */
+            flex-shrink: 0; /* não encolhe */
         }
 
         .question-text {
@@ -429,7 +429,7 @@
 
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin: 1.8rem 0 1rem;
         }
@@ -472,8 +472,8 @@
         .option-prefix {
             font-weight: 700;
             background: rgba(255,255,255,0.2);
-            width: 2rem;
-            height: 2rem;
+            width: 2.2rem;
+            height: 2.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -656,11 +656,6 @@
             .question-text {
                 font-size: 1.1rem;
             }
-            .question-num {
-                width: 3rem;
-                height: 3rem;
-                font-size: 1.5rem;
-            }
             .figure img {
                 max-height: 350px;
             }
@@ -674,6 +669,11 @@
             .btn {
                 width: 100%;
                 min-width: auto;
+            }
+            .question-num {
+                width: 3rem;
+                height: 3rem;
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -1081,7 +1081,6 @@
             }
 
             function corrigirTodas() {
-                if (corrigido) return; // evitar múltiplas correções
                 corrigido = true;
                 let correctCount = 0;
                 for (let i = 1; i <= totalQuestions; i++) {
@@ -1178,7 +1177,8 @@
                         timerInterval = null;
                         timerMessage.innerText = 'Tempo esgotado!';
                         if (!corrigido) {
-                            finalizarEExibir(); // mostra resultado automaticamente
+                            corrigirTodas();
+                            finalizarEExibir(); // já mostra resultado
                         }
                     }
                 }, 1000);
